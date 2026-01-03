@@ -1,6 +1,6 @@
 <!-- markdownlint-disable MD033 MD041 -->
 <p align="center">
-  <img alt="LOGO" src="https://github.com/user-attachments/assets/fbcd525c-1308-4d33-89ac-36f3ebb180ee" width="256" height="256" />
+  <img alt="LOGO" src="https://maaend.com/MaaEnd-Tiny-512.png" width="256" height="256" />
 </p>
 
 <div align="center">
