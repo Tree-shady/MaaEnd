@@ -170,7 +170,6 @@ jobs:
           prerelease: ${{ needs.meta.outputs.is_prerelease == 'true' }}
 
       - name: Trigger MirrorChyanUploading
-        if: false
         if: ${{ github.repository_owner == 'MaaEnd' }}
         shell: bash
         run: |
