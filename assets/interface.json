@@ -84,7 +84,6 @@
             "name": "AndroidOpenGame",
             "label": "🎮打开游戏",
             "entry": "AndroidOpenGame",
-            "default_check": true,
             "description": "安卓端打开游戏，需先手动打开模拟器",
             "controller": [
                 "ADB"
@@ -94,7 +93,6 @@
             "name": "PCOpenGame",
             "label": "🎮进入游戏",
             "entry": "PCOpenGame",
-            "default_check": true,
             "description": "PC端进入游戏，需先手动打开游戏",
             "controller": [
                 "Win32",
@@ -127,7 +125,6 @@
             "name": "ImportBluePrints",
             "label": "📐一键导入蓝图",
             "entry": "ImportBluePrints",
-            "default_check": false,
             "description": "一键批量导入蓝图，支持智能解析，**请在终末地我的蓝图页面开始任务**",
             "option": [
                 "ImportBluePrints"
