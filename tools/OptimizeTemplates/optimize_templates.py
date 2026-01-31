@@ -4,6 +4,7 @@ import os
 import pathlib
 import re
 import struct
+import subprocess
 from argparse import ArgumentParser
 
 import numpy as np
@@ -68,7 +69,8 @@ def check_png_need_update(file_path: str, perfect_pngs: dict, quiet: bool):
 
     file_id = get_file_id(file_path)
     if not file_id:
-        print("unknown file path", file_path)
+        if not quiet:
+            print("unknown file path", file_path)
         return False
 
     if file_id in perfect_pngs:
@@ -131,14 +133,17 @@ def update_png_with_oxipng(file_path: str, perfect_pngs: dict, quiet: bool):
     file_id = get_file_id(file_path)
     sz_before = os.stat(file_path).st_size
 
-    img_before = np.array(Image.open(file_path).convert("L"))
+    with Image.open(file_path) as img:
+        img_before = np.array(img.convert("L"))
 
+    oxipng_cmd_base = ["oxipng", "-o", "max", "--fast", "-Z", "-s"]
     if quiet:
-        os.system(f'oxipng -o max --fast -Z -s -q "{file_path}"')
-        os.system(f'oxipng -o 2 -s -q "{file_path}"')
-    else:
-        os.system(f'oxipng -o max --fast -Z -s "{file_path}"')
-        os.system(f'oxipng -o 2 -s "{file_path}"')
+        oxipng_cmd_base.append("-q")
+    
+    # First pass
+    subprocess.run(oxipng_cmd_base + [file_path], check=True)
+    # Second pass
+    subprocess.run(["oxipng", "-o", "2", "-s"] + (["-q"] if quiet else []) + [file_path], check=True)
 
     sz_after = os.stat(file_path).st_size
 
@@ -153,7 +158,8 @@ def update_png_with_oxipng(file_path: str, perfect_pngs: dict, quiet: bool):
         sha256 = hashlib.sha256(data).hexdigest()
         perfect_pngs.update({file_id: sha256})
 
-    img_after = np.array(Image.open(file_path).convert("L"))
+    with Image.open(file_path) as img:
+        img_after = np.array(img.convert("L"))
     if not (img_before == img_after).all():
         return -1
 
